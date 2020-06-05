@@ -3,8 +3,7 @@
 /*=======Automagically Detected Files To Include=====*/
 #include "unity.h"
 #include "cmock.h"
-#include "mock_scu_18xx_43xx.h"
-#include "mock_gpio_18xx_43xx.h"
+#include "mock_cp_mcu_scu_gpio.h"
 
 int GlobalExpectCount;
 int GlobalVerifyOrder;
@@ -13,6 +12,13 @@ char* GlobalOrderError;
 /*=======External Functions This Runner Calls=====*/
 extern void setUp(void);
 extern void tearDown(void);
+extern void test_my_gpio_write(void);
+extern void test_my_gpio_read_outOfRange(void);
+extern void test_my_gpio_read(void);
+extern void test_my_gpio_init_output(void);
+extern void test_my_gpio_init_input_pullup_pulldown(void);
+extern void test_my_gpio_init_input_pullup(void);
+extern void test_my_gpio_init_input_pulldown(void);
 extern void test_my_gpio_init_input(void);
 
 
@@ -22,18 +28,15 @@ static void CMock_Init(void)
   GlobalExpectCount = 0;
   GlobalVerifyOrder = 0;
   GlobalOrderError = NULL;
-  mock_scu_18xx_43xx_Init();
-  mock_gpio_18xx_43xx_Init();
+  mock_cp_mcu_scu_gpio_Init();
 }
 static void CMock_Verify(void)
 {
-  mock_scu_18xx_43xx_Verify();
-  mock_gpio_18xx_43xx_Verify();
+  mock_cp_mcu_scu_gpio_Verify();
 }
 static void CMock_Destroy(void)
 {
-  mock_scu_18xx_43xx_Destroy();
-  mock_gpio_18xx_43xx_Destroy();
+  mock_cp_mcu_scu_gpio_Destroy();
 }
 
 /*=======Test Reset Options=====*/
@@ -84,7 +87,14 @@ static void run_test(UnityTestFunction func, const char* name, int line_num)
 int main(void)
 {
   UnityBegin("test_my_gpio.c");
-  run_test(test_my_gpio_init_input, "test_my_gpio_init_input", 15);
+  run_test(test_my_gpio_write, "test_my_gpio_write", 12);
+  run_test(test_my_gpio_read_outOfRange, "test_my_gpio_read_outOfRange", 21);
+  run_test(test_my_gpio_read, "test_my_gpio_read", 21);
+  run_test(test_my_gpio_init_output, "test_my_gpio_init_output", 38);
+  run_test(test_my_gpio_init_input_pullup_pulldown, "test_my_gpio_init_input_pullup_pulldown", 48);
+  run_test(test_my_gpio_init_input_pullup, "test_my_gpio_init_input_pullup", 48);
+  run_test(test_my_gpio_init_input_pulldown, "test_my_gpio_init_input_pulldown", 66);
+  run_test(test_my_gpio_init_input, "test_my_gpio_init_input", 66);
 
   CMock_Guts_MemFreeFinal();
   return UnityEnd();
