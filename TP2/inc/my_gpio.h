@@ -59,7 +59,9 @@ typedef struct _my_gpio_pins_t * my_gpio_pins_t;
  * 	- The on-chip pull-up or pull-down resistor have a tipical value of 50k
  * 	- The default value is pull-up enable
  */
-void my_gpio_init(my_gpio_map_t const pin, my_gpio_config_t const config);
+void
+my_gpio_init (my_gpio_map_t const pin,
+              my_gpio_config_t const config);
 
 /*
  * @brief gprio write value
@@ -67,18 +69,20 @@ void my_gpio_init(my_gpio_map_t const pin, my_gpio_config_t const config);
  * @param val bool value
  * @return nothing
  */
-void my_gpio_write(my_gpio_map_t const pin, bool const val);
+void
+my_gpio_write (my_gpio_map_t const pin,
+               bool const val);
 
 /*
  * @brief gpio read pin
  * @param pin mcu pin to be read
  * @return readed value
  */
-bool my_gpio_read(my_gpio_map_t const pin);
+bool
+my_gpio_read (my_gpio_map_t const pin);
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif // MY_GPIO_H
