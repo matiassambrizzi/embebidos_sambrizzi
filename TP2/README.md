@@ -90,23 +90,21 @@ typedef enum {
 
 En la [función](https://github.com/mollykei/SE_G2/blob/718fcc6d45c7b7f40a5b75d812e2959cc03e9c6e/TP2/src/my_gpio.c#L51) `gpioInit` se puede observar la llamada de las funciones provistas por el fabricante para cada tipo de configuración disponible del *GPIO*,
 
-* `Chip_SCU_PinMux`[SCU], al recibir el número de puerto, el número de pin, el modo de cofiguración y la función del pin, realiza la configuración del pin GPIO correspondiente a la comunicación UART.
+* `Chip_SCU_PinMux`[SCU], al recibir el número de puerto, el número de pin, el modo de cofiguración y la función del pin.
 
-* `Chip_GPIO_SetDir` [GPIO], al recibir el número de puerto, el registrodel GPIO en el integrado, el valor del bit y la dirección,  establece la dirección a utilizar en el puerto del GPIO.
+* `Chip_GPIO_SetDir` [GPIO], al recibir el número de puerto, el registro del GPIO en el integrado, el valor del bit y la dirección,  establece el pin como entrada o salida.
 
-* `Chip_GPIO_SetPinState` [GPIO], al recibir el número de puerto, el registro del GPIO en el integrado, el número del pin y el nivel lógico,  establece  el estado del pin GPIO a través del registro de bytes del GPIO al recibir el número del pin, el nivel lógico, el número y registro del puerto.
+* `Chip_GPIO_SetPinState` [GPIO], al recibir el número de puerto, el registro del GPIO en el integrado, el número del pin y el nivel lógico,  establece  el estado del pin GPIO.
 
 ### Lectura del pin GPIO
 
-En la [función](https://github.com/mollykei/SE_G2/blob/718fcc6d45c7b7f40a5b75d812e2959cc03e9c6e/TP2/src/my_gpio.c#L111) `gpioRead` se utiliza la funció `Chip_GPIO_ReadPortBit` que lee el estado del pin GPIO al indicar su número, el número y el registro del puerto.
+En la [función](https://github.com/mollykei/SE_G2/blob/718fcc6d45c7b7f40a5b75d812e2959cc03e9c6e/TP2/src/my_gpio.c#L111) `gpioRead` se utiliza la funció `Chip_GPIO_ReadPortBit` que lee el estado del pin GPIO.
 
 ### Escritura del pin GPIO
 
-Al igual que en la [función](https://github.com/mollykei/SE_G2/blob/718fcc6d45c7b7f40a5b75d812e2959cc03e9c6e/TP2/src/my_gpio.c#L127) de inicialización, una vez establecidos los parámetros de la estructura `my_conf_t`, se llama a la función `Chip_GPIO_SetPinState` detallada previamente para establece el estado del pin GPIO.
-
+Al igual que en la [función](https://github.com/mollykei/SE_G2/blob/718fcc6d45c7b7f40a5b75d812e2959cc03e9c6e/TP2/src/my_gpio.c#L127) de inicialización, una vez establecidos los parámetros de la estructura `my_gpio_config_t`, se llama a la función `Chip_GPIO_SetPinState` detallada previamente para establece el estado del pin GPIO.
 
 --------------------------------------------------------------------------------------------------------------------------
-
 
 ### app.c
 #### Identificar funciones de la librería sAPI
