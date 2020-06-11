@@ -2,12 +2,14 @@
 #### Sistemas Embebidos
 ##### Manejos de Entradas y Salidas
 
-# Creación de las funciones de inicializacion, escritura y lectura.
+## Compilación del programa
 
+Para compilar el programa se deberán seguir los siguientes pasos
+1. Ubicar esta carpeta en `firmware_v3/examples/c/tp2`
+1. Copiar el archivo `program.mk` y ubicarlo en `firmware_v3` junto con el `Makefile`
+1. Ya se podrá compilar el programa normalmente
 
-## ToDo: identificacion de las estructuras que respresentan los perifericos SCU y GPIO y las **funciones** implementadas para manejarlas,...
-
-## Configuración del GPIO
+## Funciones de inicializacion, escritura y lectura.
 
 En la siguiente tabla se puede observar los tipos de **configuraciones** disponibles para la utilización del GPIO.
 
@@ -15,18 +17,18 @@ En la siguiente tabla se puede observar los tipos de **configuraciones** disponi
 | -------------- |:------------------------:|
 | INPUT          | No *PULLUP* o *PULLDOWN* |
 | OUTPUT         | -                        |
-| PULLDOWN       | are neat                 |
+| PULLDOWN       | -                |
 | INPUT_REPEATER | *PULLUP* y *PULLDOWN*    |
 | OUTPUT         | -                        |
 | ENABLE         | -                        |
 
 La información obtenida puede observarse en el tipo enumerativo `gpioInit_t` del archivo *~/libs/sapi/sapi_v0.5.2/board/src/sapi_board.c*.
 
-## Estructura de datos y variables
+### Estructura de datos y variables
 
 En primer lugar, se incializan los pines de las entradas/salidas de propósito general disponibles en la *EDU CIAA-NXP*. Para ello, se crea la estructura `_my_gpio_pins_t` que contiene  miembros de los periféricos **SCU** y **GPIO**.
 
-```
+```C
 struct _my_gpio_pins_t {
 	uint8_t scu_port;
 	uint8_t scu_pin;
@@ -40,7 +42,7 @@ struct _my_gpio_pins_t {
 
 Luego, se crea el **vector global** que contiene la inicialización de los pines según la estructura descripta anteriormente. 
 
-```
+```C
 const _my_gpio_pins_t gpio_pins_init[] = {
 		//{scu_port, scu_pin, gpio_port, gpio_pin, function}
 		{ 2, 10, 0, 14, 0 }, //LED1
@@ -62,7 +64,7 @@ const _my_gpio_pins_t gpio_pins_init[] = {
 
 Finalmente, se crea el tipo enumerativo my_gpio_map_t que contiene todas los posibles *GPIOs*,
 
-```
+```C
 typedef enum {
 	MY_GPIO_LED1,
 	MY_GPIO_LED2,
@@ -104,10 +106,7 @@ Al igual que en la [función](https://github.com/mollykei/SE_G2/blob/718fcc6d45c
 
 
 --------------------------------------------------------------------------------------------------------------------------
-Para compilar el programa se deberán seguir los siguientes pasos
-1. Ubicar esta carpeta en `firmware_v3/examples/c/tp2`
-1. Copiar el archivo `program.mk` y ubicarlo en `firmware_v3` junto con el `Makefile`
-1. Ya se podrá compilar el programa normalmente
+
 
 ### app.c
 #### Identificar funciones de la librería sAPI
@@ -146,7 +145,5 @@ void __stdio_init()
    Board_Debug_Init();
 }
 ```
-De esta forma se inicializa el `UART` con una velocidad de `DEBUG_UART_BAUD_RATE 115200`
-
 #### Funcionamiento del programa
 Al iniciar el programa se ejecuta la función `boardInit()` que se encarga de inicializar los distintos GPIO. Luego el programa utiliza la función `gpioToggle(CIAA_BOARD_LED)` para prender y apagar un el led de la placa, esto lo realiza por 10 segundos. Luego, entra al ciclo `while(TRUE)` donde prenderá el LED siempre y cuando se presione el botón `CIAA_BOARD_BUTTON`. 
