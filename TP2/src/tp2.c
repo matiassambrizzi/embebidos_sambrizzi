@@ -4,24 +4,24 @@
 #include <stdbool.h>
 #include "my_gpio.h"
 
-int 
-main(void) {
+int main(void)
+{
 
-	SystemCoreClockUpdate ();
-	cyclesCounterInit (SystemCoreClock);
+	SystemCoreClockUpdate();
+	cyclesCounterInit(SystemCoreClock);
 
 #ifndef USE_FREERTOS
 	tickInit(1);
 #endif
 
-	my_gpio_init (MY_GPIO_LEDR, MY_GPIO_OUTPUT);
+	my_gpio_init(MY_GPIO_LEDR, MY_GPIO_OUTPUT);
 
 	while (1) {
 
-                my_gpio_write (MY_GPIO_LEDR, ON);
-		delay (1000);
-		my_gpio_write (MY_GPIO_LEDR, OFF);
-		delay (1000);
+		my_gpio_write(MY_GPIO_LEDR, ON);
+		delay(1000);
+		my_gpio_write(MY_GPIO_LEDR, OFF);
+		delay(1000);
 
 	}
 
