@@ -1,79 +1,31 @@
-/*============================================================================
- * Autor:
- * Licencia:
- * Fecha:
- *===========================================================================*/
+#ifndef EXAMPLES_C_TP2_TP2_SRC_TP2_C_
+#define EXAMPLES_C_TP2_TP2_SRC_TP2_C_
 
-// Inlcusiones
+#include <stdbool.h>
+#include "my_gpio.h"
 
-#include "tp2.h"         // <= Su propia cabecera
-#include "sapi.h"        // <= Biblioteca sAPI
-
-// FUNCION PRINCIPAL, PUNTO DE ENTRADA AL PROGRAMA LUEGO DE ENCENDIDO O RESET.
-int main( void )
+int main(void)
 {
-   // ---------- CONFIGURACIONES ------------------------------
 
-   // Inicializar y configurar la plataforma
-   boardConfig();
+	SystemCoreClockUpdate();
+	cyclesCounterInit(SystemCoreClock);
 
-   // Crear varias variables del tipo booleano
-   bool_t buttonValue = OFF;
-   bool_t ledValue    = OFF;
-   // Crear variable del tipo tick_t para contar tiempo
-   tick_t timeCount   = 0;
+#ifndef USE_FREERTOS
+	tickInit(1);
+#endif
 
-   // ---------- REPETIR POR SIEMPRE --------------------------
-   while( TRUE ) {
+	my_gpio_init(MY_GPIO_LEDR, MY_GPIO_OUTPUT);
 
-      /* Retardo bloqueante durante 100ms */
-      
-      delay( 100 );
-      
-      /* Si pasaron 10 segundos comienza a funcionar el programa que copia las
-         acciones en BOTON al LED. Mientras espera titila el LED.  */
-      
-      timeCount++;      
-      
-      if( timeCount == 100 ){ // 100ms * 100 = 10s
-         
-         while( TRUE ) {
-            
-            /* Si se presiona CIAA_BOARD_BUTTON, enciende el CIAA_BOARD_LED */
+	while (1) {
 
-            // Leer pin conectado al boton.
-            buttonValue = gpioRead( CIAA_BOARD_BUTTON );
-            // Invertir el valor leido, pues lee un 0 (OFF) con boton
-            // presionado y 1 (ON) al liberarla.
-            buttonValue = !buttonValue;
-            // Escribir el valor leido en el LED correspondiente.
-            gpioWrite( CIAA_BOARD_LED, buttonValue );
+		my_gpio_write(MY_GPIO_LEDR, ON);
+		delay(1000);
+		my_gpio_write(MY_GPIO_LEDR, OFF);
+		delay(1000);
 
-            /* Enviar a la salida estandar (UART_DEBUG) el estado del LED */
-            
-            // Leer el estado del pin conectado al led
-            ledValue = gpioRead( CIAA_BOARD_LED );
-            // Chequear si el valor leido es encedido
-            if( ledValue == ON ) {
-               // Si esta encendido mostrar por UART_USB "LED encendido."
-                printf( "LED encendido.\r\n" );
-            	//stdioPrintf(UART_USB, "LED encendidooo.\r\n");
-            } else {
-               // Si esta apagado mostrar por UART_USB "LED apagado."
-               printf( "LED apagado.\r\n" );
-               //stdioPrintf(UART_USB, "LED apagadooo.\r\n");
-            }
-            delay( 250 );
-            
-         }
-      } else {
-         // Intercambiar el valor de CIAA_BOARD_LED
-         gpioToggle(CIAA_BOARD_LED);
-      }
-   }
+	}
 
-   // NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa se ejecuta
-   // directamenteno sobre un microcontroladore y no es llamado por ningun
-   // Sistema Operativo, como en el caso de un programa para PC.
-   return 0;
+	return 0;
 }
+
+#endif /* EXAMPLES_C_TP2_TP2_SRC_TP2_C_ */
